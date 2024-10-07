@@ -3,6 +3,9 @@ const { success_function,error_function } = require('../utils/response-handler')
 const fileUpload = require('../utils/file-upload').fileUpload;
 const bcrypt = require('bcrypt');
 
+
+//add user
+
 exports.createUser=async function(req,res) {
     try{
         let body=req.body;
@@ -48,7 +51,7 @@ exports.createUser=async function(req,res) {
         body.password=hashed_password;
 
 
-        let new_user=await user.create('body');
+        let new_user=await user.create(body);
         if(new_user){
             response=res.status(200).send("User created successfully");
             return;
@@ -63,6 +66,37 @@ exports.createUser=async function(req,res) {
         console.log("error : ", error);
         res.status(400).send(error.message ? error.message : "Something went wrong");
         return;
+    }
+}
+
+//get users
+
+exports.getUsers=async function (req,res) {
+    try{
+        let usersdata=await user.find();
+        console.log(usersdata);
+        res.status(200).send(usersdata);
+        return;
+    }
+    catch(error){
+        console.log(error);
+        res.status(400).send(error.message ? error.message : error);
+    }
+}
+
+//get single user
+
+exports.getSingleUser=async function (req,res) {
+    try{
+        let id=req.params.id;
+        console.log(id);
+        let userData = await user.find({_id:id});
+        console.log(userData);
+        res.status(200).send(userData);
+    }
+    catch(error){
+        console.log(error);
+        res.status(400).send(error.message ? error.message : error);
     }
 }
 
