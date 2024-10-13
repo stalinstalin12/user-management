@@ -2,34 +2,3 @@
 node_modules/
 
 # Logs
-logs
-*.log
-npm-debug.log*
-
-# Environment variables
-.env
-
-# Build output
-dist/
-build/
-
-# Temporary files
-tmp/
-temp/
-
-# OS-specific files
-.DS_Store
-Thumbs.db
-
-# IDE-specific files
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-
-# Coverage reports
-coverage/
-
-# Other files to ignore
-*.tgz
-*.zip

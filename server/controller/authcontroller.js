@@ -18,11 +18,12 @@ exports.login=async (req,res)=>{
             let db_pass=user.password;
             console.log(db_pass);
 
-            let password_match=bcrypt.comareSync(password,db_pass);
+            let password_match=bcrypt.compareSync(password,db_pass);
             console.log(password_match);
 
             if(password_match){
-                let token=jwt.sign({user_id:used.id},process.env.PRIVATE_KEY,{expiresIn:"10d"} );
+                let token=jwt.sign({user_id:user.id},process.env.PRIVATE_KEY,{expiresIn:"10d"} );
+                console.log(token)
                 let response=success_function({
                     statusCode:200,
                     data:token,
