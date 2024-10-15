@@ -24,7 +24,7 @@ exports.accesControl= async function (access_types,req,res,next) {
             });
             return res.status(response.statusCode).send (response);
         }
-        const token =auth_header.split("")[1];
+        const token =auth_header.split(" ")[1];
         console.log(token);
 
         if(!token||token==='null'||token==='undefined'){
@@ -43,9 +43,9 @@ exports.accesControl= async function (access_types,req,res,next) {
                 });
                 return res.status(response.statusCode).send(response);
             }
-            console.log("decoded",decoded);
+            console.log("decoded",decode);
 
-            let user=await users.findOne({_id:decoded.user_id}).populate("user_type");
+            let user=await users.findOne({_id:decode.user_id}).populate("user_type");
             console.log(user);
 
             if(!user){

@@ -13,7 +13,7 @@ function setaccessControl(access_types){
 
 router.post('/users',setaccessControl("1"), userController.createUser);
 router.get('/users',setaccessControl("1,2"), userController.getUsers);
-router.get('/user/:id',setaccessControl("1,2"), userController.getSingleUser);
+router.get('/user/:id',setaccessControl("*"), userController.getSingleUser);
 
 
 module.exports = router;

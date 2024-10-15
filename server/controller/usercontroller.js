@@ -13,8 +13,8 @@ exports.createUser=async function(req,res) {
         let email=req.body.email;
         let password=req.body.password;
         let image=req.body.image;
-
-
+       
+        body.user_type = '67093864c0ea8c996aa031a2'
 
          
 
@@ -40,7 +40,28 @@ exports.createUser=async function(req,res) {
             res.status(400).send('user already exist');
             return;
         } 
-         //password hashing
+
+
+
+        //random password for new user
+
+        function generateRandomPassword(length){
+            let charset="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            let password="";
+
+            for (var i=0;i<length;i++){
+                var randomindex=Math.floor(Math.random()*charset.length);
+                password+=charset.charAt(randomindex);
+            }
+            return password;
+        }
+        var randomPassword= generateRandomPassword(10);
+
+        
+
+
+        
+        //password hashing
 
         let salt=bcrypt.genSaltSync(10);
         console.log(salt);
