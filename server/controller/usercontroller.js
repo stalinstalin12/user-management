@@ -2,6 +2,8 @@ const user=require('../db/models/users');
 const { success_function,error_function } = require('../utils/response-handler');
 const fileUpload = require('../utils/file-upload').fileUpload;
 const bcrypt = require('bcrypt');
+const set_password_template = require("../utils/email-templates/set-password").resetPassword;
+const sendEmail = require("../utils/send-email").sendEmail;
 
 
 //add user
@@ -11,7 +13,6 @@ exports.createUser=async function(req,res) {
         let body=req.body;
         let name=req.body.name;
         let email=req.body.email;
-        let password=req.body.password;
         let image=req.body.image;
        
         body.user_type = '67093864c0ea8c996aa031a2'
@@ -57,7 +58,11 @@ exports.createUser=async function(req,res) {
         }
         var randomPassword= generateRandomPassword(10);
 
-        
+        let content=await set_password_template(name,email,randomPassword);
+        await sendEmail(email,"Updated password",content);
+
+        body.password=randomPassword;
+        let password=body.password;
 
 
         
