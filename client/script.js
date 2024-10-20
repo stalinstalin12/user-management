@@ -104,35 +104,51 @@ async function adduser(event) {
 
 }
 
+// view all users
+async function getallusers(){
+    console.log("local storage",localStorage);
+    const authToken=localStorage.getItem("authToken");
+    console.log("auth token",authToken);
 
-let newfetch = fetch("http://localhost:3001/users", {
-    method: "GET"
-})
-    .then((response) => {
-        console.log("new response:", response);
-        return response.json();
-
+    let response=await fetch("http://localhost:30001/users",{
+        method:"GET",
+        headers:{
+            "Authorization": `bearer ${authToken}`,
+            "Content-Type": "application/json"
+        }
     })
-    .then((datas) => {
-        console.log("datassss", datas);
-        let tbody = document.getElementById('tbody');
-        let content = '';
-        for (i = 0; i < datas.length; i++) {
-            content = content + `
-            <tr>
-            <td>${datas[i].name}</td>
-            <td>${datas[i].email}</td>
-            <td>${datas[i].password}</td>
-            <td><button class="btn" onclick="sendid('${datas[i]._id}')">view</button>
-            <tr>`
-
+    try{
+        console.log("new response:", response);
+        if (!response.ok) {
+            let parsed_response = await response.json();
+            let message = parsed_response.message;
+            alert(message);
 
         }
-        tbody.innerHTML = content;
-    })
-    .catch((error) => {
-        console.log(error);
-    })
+        else {
+
+            let datas = await response.json();
+            console.log("datassss", datas);
+            let tbody = document.getElementById('tbody');
+            let content = '';
+            for (i = 0; i < datas.length; i++) {
+                content = content + `
+                <tr>
+                <td>${datas[i].name}</td>
+                <td>${datas[i].email}</td>
+                <td>${datas[i].password}</td>
+                <td><button class="btn" onclick="sendid('${datas[i]._id}')">view</button>
+                <tr>`
+
+
+            }
+            tbody.innerHTML = content;
+        }
+    }
+    catch(error){
+
+    }
+}
 
 
 
@@ -390,36 +406,57 @@ async function login(event) {
         password
     }
 
-    console.log("datas from login :",datas);
+    console.log("datas from login :", datas);
     let json_data = JSON.stringify(datas);
 
-    let response = await fetch ("http://localhost:3001/login",{
-        method : 'POST',
-        headers :{
-            "Content-Type" : "application/json", 
-            'Authorization': `Bearer ${data}`
+    let response = await fetch("http://localhost:3001/login", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
         },
-        body : json_data
+        body: json_data
     })
 
-    console.log("response of login:",response);
-    
-    if(response.ok){
-        let parsed_response = await  response.json();
-        console.log("parsed_response :",parsed_response);
-        console.log("data :",parsed_response.data);
+
+
+    if (response.ok) {
+        let parsed_response = await response.json();
+        console.log("parsed_response 1:", parsed_response);
+        let data = parsed_response.data;
+        console.log("data :", data);
+        console.log("type of data:", typeof (data));
+        alert(parsed_response.message)
 
         // saving token into browsers local storage
-        localStorage.setItem('authToken',parsed_response.data);
+        localStorage.setItem('authToken', parsed_response.data.token);
+        let id = data._id;
+        console.log('ID from login :', id);
+        console.log(localStorage);
+        let user_type = data.user_type;
+        console.log("user_type :", user_type);
+        let is_password_reset = data.is_password_reset;
+        if (user_type === "67093864c0ea8c996aa031a2") {
+            if (is_password_reset === false) {
+                alert("Reset password to continue");
+                window.location.href = "ResetPassword.html"
+            }
+            else {
+                window.location.href = `login.html?id=${id}`
+            }
+
+        }
+        else {
+            window.location.href = "getallusers.html"
+        }
+
     }
-    else{
-        console.log("response :",response.statusText);
+    else {
+        let parsed_response = await response.json();
+        console.log("message :", parsed_response.message);
+        alert(parsed_response.message);
     }
 
 
 
-    
+
 }
-
-
-

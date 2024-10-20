@@ -5,18 +5,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./style.css">
+    <style>
+        body{
+            background-color: beige;
+        }
+        form{
+           
+           
+            margin: auto;
+            width: 40vw;
+            height: 40vh;
+            
+        }
+        .inputs{
+            margin-top: 30vh;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 50px;
+        }
+        .inputs input{
+            height: 20px;
+            width: 250px;
+            color: black; 
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+        }
+        .inputs button{
+            height: 30px;
+            width: 100px;
+            border: none;
+            background-color: rgb(255, 25, 25);
+        }
+    </style>
 </head>
 
 <body>
     <form onsubmit="adduser(event)" method="POST">
+        <div class="inputs">
         <div><input type="text" name="name" id="name" placeholder="Enter your name"> <span id="name-err"></span></div>
         <div><input type="email" name="email" id="email" placeholder="Enter your email"> <span id="email-err"></span>
         </div>
-        <div><input type="password" name="password" id="pass" placeholder="Enter your password"> <span
-                id="pass-err"></span>
-        </div>
-        <span><button type="submit">submit</button></span>
+        <span><button type="submit">submit</button></span></div>
     </form>
 
     <script src="./script.js"></script>
